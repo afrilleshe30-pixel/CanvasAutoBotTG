@@ -98,15 +98,16 @@ export class CanvasNotifier {
                 }
             }
 
-            // 3. Check Assignments & Due Reminders
+            // 3. Check Assignments & Due Reminders (Assignment notifications disabled - announcements only)
             const assignments = await getAllAssignments(activeCourses);
-            const now = new Date();
+            // const now = new Date();
 
             for (const assignment of assignments) {
                 const isSeen = await storage.isAssignmentSeen(assignment.id);
 
-                // Notify if new assignment posted
+                // Notify if new assignment posted (DISABLED)
                 if (!isSeen) {
+                    /*
                     if (!isInitialRun && targetChatId && !isAssignmentSubmitted(assignment)) {
                         try {
                             const text = formatNewAssignmentNotification(assignment);
@@ -120,10 +121,12 @@ export class CanvasNotifier {
                             console.error(`Failed to send new assignment alert #${assignment.id}:`, sendErr);
                         }
                     }
+                    */
                     await storage.markAssignmentSeen(assignment.id);
                 }
 
-                // Check Due Date Reminders (1 to 3 hours before due date)
+                // Check Due Date Reminders (1 to 3 hours before due date) (DISABLED)
+                /*
                 if (assignment.due_at && !isAssignmentSubmitted(assignment)) {
                     const dueDate = new Date(assignment.due_at);
                     const diffMs = dueDate.getTime() - now.getTime();
@@ -164,6 +167,7 @@ export class CanvasNotifier {
                         }
                     }
                 }
+                */
             }
 
             await storage.updateSyncTimestamp(activeCourses.length);
